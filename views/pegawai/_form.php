@@ -11,6 +11,9 @@ use yii\helpers\ArrayHelper; //penggunaan array assosiatif
 $listDivisi = ArrayHelper::map(Divisi::find()->asArray()->all(),'id','nama');
 $listJabatan = ArrayHelper::map(Jabatan::find()->asArray()->all(),'id','nama');
 
+//panggil vendor
+use kartik\select2\Select2;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Pegawai */
 /* @var $form yii\widgets\ActiveForm */
@@ -18,7 +21,7 @@ $listJabatan = ArrayHelper::map(Jabatan::find()->asArray()->all(),'id','nama');
 
 <div class="pegawai-form">
 
-    <!-- <?php $form = ActiveForm::begin(); ?> -->
+    <?php// $form = ActiveForm::begin(); ?>
     <?php $form = ActiveForm::begin(
         ['options'=>['enctype'=>'multipart/form-data']]
      ); ?>
@@ -37,17 +40,34 @@ $listJabatan = ArrayHelper::map(Jabatan::find()->asArray()->all(),'id','nama');
     <!-- <?= $form->field($model, 'idjabatan')->textInput() ?> -->
 
 
-    <?= $form->field($model, 'idjabatan')->dropDownList(
+    <!-- <?= $form->field($model, 'idjabatan')->dropDownList(
                 $listJabatan, 
                 ['prompt'=>'-- Pilih Jabatan --']
-                ); ?>
+                ); ?> -->
+
+    <?= $form->field($model, 'idjabatan')->widget(Select2::classname(), [
+            'data' => $listJabatan,
+            'language' => 'id',
+            'options' => ['placeholder' => 'Pilih Jabatan ...'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]); ?>
 
     <!-- <?= $form->field($model, 'iddivisi')->textInput() ?> -->
 
-    <?= $form->field($model, 'iddivisi')->dropDownList(
+    <!-- <?= $form->field($model, 'iddivisi')->dropDownList(
                 $listDivisi, 
                 ['prompt'=>'-- Pilih Divisi --']
-                ); ?>
+                ); ?> -->
+     <?= $form->field($model, 'iddivisi')->widget(Select2::classname(), [
+            'data' => $listDivisi,
+            'language' => 'id',
+            'options' => ['placeholder' => 'Pilih Divisi ...'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]); ?>
 
     <?= $form->field($model, 'alamat')->textarea(['rows' => 6]) ?>
 

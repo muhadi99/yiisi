@@ -26,27 +26,44 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <center>
-     <img src="<?= Yii::$app->request->baseUrl;?>
-     /images/<?= $model->foto; ?>" width="15%" />
-    <center>
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            //'id',
-            'nip',
-            'nama',
-            'gender',
-            'tempat_lahir',
-            'tanggal_lahir',
-            //'idjabatan',
-            'idjabatan0.nama',
-            //'iddivisi',
-            'iddivisi0.nama',
-            'alamat:ntext',
-            'email:email',
-            'foto',
-        ],
-    ]) ?>
+    <div class="row">
+        <div class="col-md-7">
+            <?= DetailView::widget([
+                'model' => $model,
+                'attributes' => [
+                    //'id',
+                    'nip',
+                    'nama',
+                    'gender',
+                    'tempat_lahir',
+                    'tanggal_lahir',
+                    //'idjabatan',
+                    'idjabatan0.nama',
+                    //'iddivisi',
+                    'iddivisi0.nama',
+                    'alamat:ntext',
+                    'email:email',
+                    'foto',
+                ],
+            ]) ?>
+        </div>
+        <div class="col-md-5">
+            <center>
+                <?php
+                if (!empty($model->foto)) { ?>
+                <img src="<?= Yii::$app->request->baseUrl;?>
+             /images/<?= $model->foto; ?>" width="50%" />
+
+                <?php
+                } else {
+                ?>
+                <img src="<?= Yii::$app->request->baseUrl;?>
+             /images/nophoto.png ?>" width="50%" />
+
+            <?php } ?>
+            <center>
+        </div>
+    </div>
+    
 
 </div>

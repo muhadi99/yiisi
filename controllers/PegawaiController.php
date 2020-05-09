@@ -117,9 +117,32 @@ class PegawaiController extends Controller
     {
         $model = $this->findModel($id);
 
+        /*
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+        */
+        //fungsi update foto
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+         //-----proses awal upload file-------------
+         $model->fotoFile = UploadedFile::getInstance($model, 'fotoFile');
+         if($model->validate() && !empty($model->fotoFile))
+         {
+             //simpan nama file foto dgn nip dan extension file yg diupload
+             $nama = $model->nip.'.'.$model->fotoFile->extension;
+             //simpan nama file foto ke field foto pada model
+             $model->foto = $nama;
+             //simpan semua data2 ke model Pegawai
+             $model->save();
+             //simpan fisik gambar ke folder images
+             $model->fotoFile->saveAs('images/'.$nama);
+         }
+         else{
+            $model->save();
+         }
+         //--------proses akhir upload file-----------
+         return $this->redirect(['view', 'id' => $model->id]);
+         }
 
         return $this->render('update', [
             'model' => $model,
@@ -135,7 +158,11 @@ class PegawaiController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        //$this->findModel($id)->delete();
+        //hapus dulu file gambar difolder images
+        $model = $this->findModel($id);
+        unlink('images/'.$model->foto);
+        $model->delete(); // hapus semua data
 
         return $this->redirect(['index']);
     }
